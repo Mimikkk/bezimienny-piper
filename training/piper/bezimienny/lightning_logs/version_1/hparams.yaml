@@ -1,0 +1,66 @@
+batch_size: 32
+betas: !!python/tuple
+- 0.8
+- 0.99
+c_kl: 1.0
+c_mel: 45
+channels: 1
+dataset:
+- /workspace/rvc-tts-training/training/piper/bezimienny/dataset.jsonl
+eps: 1.0e-09
+filter_channels: 768
+filter_length: 1024
+gin_channels: 0
+grad_clip: null
+hidden_channels: 192
+hop_length: 256
+init_lr_ratio: 1.0
+inter_channels: 192
+kernel_size: 3
+learning_rate: 0.0002
+lr_decay: 0.999875
+max_phoneme_ids: null
+mel_channels: 80
+mel_fmax: null
+mel_fmin: 0.0
+n_heads: 2
+n_layers: 6
+n_layers_q: 3
+num_speakers: 1
+num_symbols: 256
+num_test_examples: 4
+num_workers: 4
+p_dropout: 0.1
+resblock: '2'
+resblock_dilation_sizes: !!python/tuple
+- !!python/tuple
+  - 1
+  - 2
+- !!python/tuple
+  - 2
+  - 6
+- !!python/tuple
+  - 3
+  - 12
+resblock_kernel_sizes: !!python/tuple
+- 3
+- 5
+- 7
+sample_bytes: 2
+sample_rate: 22050
+seed: 1234
+segment_size: 8192
+upsample_initial_channel: 256
+upsample_kernel_sizes: !!python/tuple
+- 16
+- 16
+- 8
+upsample_rates: !!python/tuple
+- 8
+- 8
+- 4
+use_sdp: true
+use_spectral_norm: false
+validation_split: 0.02
+warmup_epochs: 0
+win_length: 1024
