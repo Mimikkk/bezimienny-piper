@@ -37,13 +37,42 @@ _POLISH_STEM = re.compile(
 )
 
 
+_SYLLABLE = re.compile(r"[aąeęioóuy]+", re.IGNORECASE)
+
+
+def _mark_trzy(word):
+    """Keep the y of trzy when later syllables would take the stress.
+
+    Unstressed, espeak says trzy as czy: trzynastka comes out czynastka.
+    A hyphen is the mark espeak actually keeps; an apostrophe does not.
+    trzymać stays, because that y is already the stressed syllable.
+    """
+    lower = word.lower()
+    pieces = []
+    start = 0
+    index = 0
+    while index < len(lower):
+        if lower.startswith("trzy", index) and index + 4 < len(lower) and lower[index + 4].isalpha():
+            if len(_SYLLABLE.findall(lower[index + 4:])) >= 2:
+                pieces.append(word[start:index + 4])
+                pieces.append("-")
+                start = index + 4
+                index += 4
+                continue
+        index += 1
+    if not pieces:
+        return word
+    pieces.append(word[start:])
+    return "".join(pieces)
+
+
 def fix_polish_z(text):
     """Hard z after z-, bez-, roz-, przez-, wz- when the next morpheme starts with i.
 
     espeak already does that, except the stem starts with im: the letters spell zim,
     so it uses the soft z of zima. The winter root stays soft.
     """
-    return _WORD.sub(_fix_word, text)
+    return _WORD.sub(lambda match: _mark_trzy(_fix_word(match)), text)
 
 
 def _fix_word(match):
